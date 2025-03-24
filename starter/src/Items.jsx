@@ -17,6 +17,15 @@ const Items = () => {
     return <p style={{ marginTop: "1rem" }}>Loading...</p>;
   }
 
+  if (isError) {
+    return <p style={{ marginTop: "1rem" }}>There was an error...</p>;
+  }
+
+  // {Axios Error}
+  // if (error) {
+  //   return <p style={{ marginTop: "1rem" }}>{error.response.data}...</p>;
+  // }
+
   console.log(result);
 
   return (
