@@ -10,12 +10,12 @@ const SingleItem = ({ item }) => {
       return customFetch.patch(`/${taskId}`, { isDone });
     },
 
-    onSuccess: (storeStateForCheckbox, variables) => {
+    onSuccess: (_, isChecked) => {
       // `variables.isDone` is the latest state of the checkbox
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
 
-      if (variables.isDone) {
-        toast.success("Item marked as done");
+      if (isChecked.isDone) {
+        toast.success("Item Cheked");
       } else {
         toast.success("Item unchecked");
       }
