@@ -4,32 +4,26 @@ import { toast } from "react-toastify";
 
 const SingleItem = ({ item }) => {
   const queryClient = useQueryClient();
-
   const { mutate: editTask } = useMutation({
     mutationFn: ({ taskId, isDone }) => {
       return customFetch.patch(`/${taskId}`, { isDone });
     },
 
-    onSuccess: (_, isChecked) => {
-      // `variables.isDone` is the latest state of the checkbox
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-
-      if (isChecked.isDone) {
-        toast.success("Item Cheked");
-      } else {
-        toast.success("Item unchecked");
-      }
     },
 
-    // reference from the previous snippet
-    //       onSuccess: () => {
-    //     queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    //     if (item.isDone) {
-    //       toast.success("Item marked as done");
-    //     }
+    // reference for marked and unmarked checkbox success message
+    // onSuccess: (_, isChecked) => {
+    //   // `variables.isDone` is the latest state of the checkbox
+    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
 
-    //   },
-    // });
+    //   if (isChecked.isDone) {
+    //     toast.success("Item Cheked");
+    //   } else {
+    //     toast.success("Item unchecked");
+    //   }
+    // },
   });
 
   return (
