@@ -1,30 +1,48 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import customFetch from "./utils";
-import { toast } from "react-toastify";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import customFetch from "./utils";
+// import { toast } from "react-toastify";
+
+import { useDeleteTask, useEditTask } from "./reactQueryCustomHooks";
 
 const SingleItem = ({ item }) => {
-  const queryClient = useQueryClient();
-  const { mutate: editTask } = useMutation({
-    mutationFn: ({ taskId, isDone }) => {
-      return customFetch.patch(`/${taskId}`, { isDone });
-    },
+  const { editTask } = useEditTask();
+  const { deleteTask, deleteTaskLoading } = useDeleteTask();
 
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
-    },
+  // -----------reference--------------- //
+  // const queryClient = useQueryClient();
+  // const { mutate: editTask } = useMutation({
+  //   mutationFn: ({ taskId, isDone }) => {
+  //     return customFetch.patch(`/${taskId}`, { isDone });
+  //   },
 
-    // reference for marked and unmarked checkbox success message
-    // onSuccess: (_, isChecked) => {
-    //   // `variables.isDone` is the latest state of the checkbox
-    //   queryClient.invalidateQueries({ queryKey: ["tasks"] });
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["tasks"] });
+  //   },
 
-    //   if (isChecked.isDone) {
-    //     toast.success("Item Cheked");
-    //   } else {
-    //     toast.success("Item unchecked");
-    //   }
-    // },
-  });
+  //   // reference for marked and unmarked checkbox success message
+  //   onSuccess: (_, isChecked) => {
+  //     // `variables.isDone` is the latest state of the checkbox
+  //     queryClient.invalidateQueries({ queryKey: ["tasks"] });
+
+  //     if (isChecked.isDone) {
+  //       toast.success("Item Cheked");
+  //     } else {
+  //       toast.success("Item unchecked");
+  //     }
+  //   },
+  // });
+
+  // const { mutate: deleteTask, isLoading } = useMutation({
+  //   mutationFn: (taskId) => {
+  //     return customFetch.delete(`/${taskId}`);
+  //   },
+
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["tasks"] });
+  //   },
+  // });
+
+  // --------------end--------------- //
 
   return (
     <div className="single-item">
@@ -44,7 +62,8 @@ const SingleItem = ({ item }) => {
       <button
         className="btn remove-btn"
         type="button"
-        onClick={() => console.log("delete task")}
+        disabled={deleteTaskLoading}
+        onClick={() => deleteTask(item.id)}
       >
         delete
       </button>
